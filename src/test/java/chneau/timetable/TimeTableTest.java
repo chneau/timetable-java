@@ -7,10 +7,10 @@ import static org.junit.Assert.*;
 
 import org.junit.Test;
 
-public class LibraryTest {
+public class TimeTableTest {
     @Test
     public void testSomeLibraryMethod() {
-        Library classUnderTest = new Library();
+        TimeTable classUnderTest = new TimeTable();
         assertTrue("someLibraryMethod should return 'true'", classUnderTest.someLibraryMethod());
     }
 }

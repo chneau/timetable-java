@@ -3,7 +3,7 @@
  */
 package chneau.timetable;
 
-public class Library {
+public class TimeTable {
     public boolean someLibraryMethod() {
         return true;
     }
