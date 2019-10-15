@@ -3,11 +3,14 @@ plugins {
     id "com.diffplug.gradle.spotless" version "3.25.0"
 }
 
+group 'chneau'
+
 repositories {
     jcenter()
 }
 
 dependencies {
+    implementation "chneau:openhours"
     testImplementation 'junit:junit:4.12'
 }
 
