@@ -19,5 +19,4 @@ final class Point implements Comparable<Point> {
         }
         return ret;
     }
-
 }

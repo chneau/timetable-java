@@ -5,12 +5,10 @@ package chneau.timetable;
 
 import static org.junit.Assert.fail;
 
+import chneau.openhours.OpenHours;
 import java.time.Duration;
 import java.time.LocalDateTime;
-
 import org.junit.Test;
-
-import chneau.openhours.OpenHours;
 
 public class TimeTableTest {
     @Test

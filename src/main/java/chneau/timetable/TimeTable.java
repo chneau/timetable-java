@@ -1,14 +1,13 @@
 package chneau.timetable;
 
+import chneau.openhours.Whenable;
 import java.time.Duration;
 import java.time.LocalDateTime;
 import java.util.ArrayList;
 import java.util.Collections;
 import java.util.List;
 
-import chneau.openhours.Whenable;
-
-public final class TimeTable{
+public final class TimeTable {
     private List<Point> rel;
     private final Whenable contraint;
     private final double max;
