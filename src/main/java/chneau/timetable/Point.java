@@ -4,7 +4,7 @@ import java.time.LocalDateTime;
 
 final class Point implements Comparable<Point> {
     final LocalDateTime time;
-    final double value;
+    double value;
 
     Point(LocalDateTime time, double value) {
         this.time = time;
