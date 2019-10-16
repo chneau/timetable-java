@@ -3,14 +3,11 @@
  */
 package chneau.timetable;
 
-import static org.junit.Assert.*;
-
 import org.junit.Test;
 
 public class TimeTableTest {
     @Test
     public void testSomeLibraryMethod() {
-        TimeTable classUnderTest = new TimeTable();
-        assertTrue("someLibraryMethod should return 'true'", classUnderTest.someLibraryMethod());
+        TimeTable classUnderTest = new TimeTable(1.);
     }
 }
