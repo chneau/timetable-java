@@ -19,4 +19,8 @@ final class Point implements Comparable<Point> {
         }
         return ret;
     }
+
+    public String toString() {
+        return "{" + time.toString() + "," + Double.toString(value) + "}";
+    }
 }

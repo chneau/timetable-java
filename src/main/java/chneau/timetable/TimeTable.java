@@ -71,6 +71,10 @@ public final class TimeTable {
         return tt;
     }
 
+    public String toString() {
+        return this.rel.toString();
+    }
+
     public LocalDateTime when(LocalDateTime ldt, Duration d, double cap) {
         {
             var t = contraint.when(ldt, d);
