@@ -21,7 +21,7 @@ public final class TimeTable{
         this(max, contraint, new ArrayList<>());
     }
 
-    public TimeTable(double max, Whenable contraint, List<Point> rel) {
+    private TimeTable(double max, Whenable contraint, List<Point> rel) {
         this.rel = rel;
         this.max = max;
         if (contraint == null) {
@@ -42,22 +42,24 @@ public final class TimeTable{
     }
 
     private void simplify() {
-        var x = new ArrayList<Point>();
+        var newx = new ArrayList<Point>();
         for (int i = 0; i < rel.size(); i++) {
-            if (x.size() == 0) {
-                x.add(rel.get(i));
+            if (i == 0) {
+                newx.add(rel.get(i));
                 continue;
             }
-            if (rel.get(i).time.equals(x.get(i - 1).time)) {
-                x.get(i - 1).value += rel.get(i).value;
-                if (x.get(x.size() - 1).value == 0) {
-                    x.remove(x.size() - 1);
+            var relTime = rel.get(i).time;
+            var newxTime = newx.get(newx.size() - 1).time;
+            if (relTime.equals(newxTime)) {
+                newx.get(newx.size() - 1).value += rel.get(i).value;
+                if (newx.get(newx.size() - 1).value == 0) {
+                    newx.remove(newx.size() - 1);
                 }
             } else {
-                x.add(rel.get(i));
+                newx.add(rel.get(i));
             }
         }
-        this.rel = x;
+        this.rel = newx;
     }
 
     public TimeTable add(LocalDateTime from, Duration dur, double cap) {

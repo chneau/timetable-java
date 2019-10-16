@@ -3,11 +3,30 @@
  */
 package chneau.timetable;
 
+import static org.junit.Assert.fail;
+
+import java.time.Duration;
+import java.time.LocalDateTime;
+
 import org.junit.Test;
+
+import chneau.openhours.OpenHours;
 
 public class TimeTableTest {
     @Test
-    public void testSomeLibraryMethod() {
-        TimeTable classUnderTest = new TimeTable(1.);
+    public void testTimeTableMicroOverflow() {
+        var tt = new TimeTable(10, OpenHours.parse("mo-fr 11:00-16:00"));
+        var d = LocalDateTime.of(2019, 3, 12, 10, 0);
+        for (int i = 0; i < 1000; i++) {
+            var when = tt.when(d, Duration.ofHours(1), 1);
+            if (when.isAfter(d)) {
+                d = when;
+            }
+            var newtt = tt.add(when, Duration.ofHours(1), 1);
+            if (!newtt.check()) {
+                fail("should not fail here");
+            }
+            tt = newtt;
+        }
     }
 }
