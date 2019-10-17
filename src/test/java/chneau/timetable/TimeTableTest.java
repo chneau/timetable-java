@@ -11,8 +11,29 @@ import java.time.LocalDateTime;
 import org.junit.Test;
 
 public class TimeTableTest {
+
     @Test
-    public void testTimeTableMicroOverflow() {
+    public void testOverlappingAndSimplifying() {
+        var tt = new TimeTable(5, OpenHours.parse("mo-fr 11:00-16:00"));
+        var d = LocalDateTime.of(2019, 3, 12, 10, 0);
+        for (int i = 0; i < 5; i++) {
+            tt = tt.add(LocalDateTime.of(2019, 3, 12, 11, 0), Duration.ofHours(2), 1);
+            if (tt == null) {
+                fail("should not fail here");
+            }
+            tt = tt.add(LocalDateTime.of(2019, 3, 12, 13, 0), Duration.ofHours(2), 1);
+            if (tt == null) {
+                fail("should not fail here");
+            }
+        }
+        tt = tt.add(LocalDateTime.of(2019, 3, 12, 11, 0), Duration.ofHours(2), 1);
+        if (tt != null) {
+            fail("should not fail here");
+        }
+    }
+
+    @Test
+    public void testMicroOverflow() {
         var tt = new TimeTable(10, OpenHours.parse("mo-fr 11:00-16:00"));
         var d = LocalDateTime.of(2019, 3, 12, 10, 0);
         for (int i = 0; i < 1000; i++) {
@@ -21,7 +42,7 @@ public class TimeTableTest {
                 d = when;
             }
             var newtt = tt.add(when, Duration.ofHours(1), 1);
-            if (!newtt.check()) {
+            if (newtt == null) {
                 fail("should not fail here");
             }
             tt = newtt;

@@ -29,7 +29,7 @@ public final class TimeTable {
         this.contraint = contraint;
     }
 
-    public boolean check() {
+    private boolean check() {
         var res = 0;
         for (int i = 0; i < rel.size(); i++) {
             res += rel.get(i).value;
@@ -68,6 +68,9 @@ public final class TimeTable {
         Collections.sort(x);
         var tt = new TimeTable(max, this.contraint, x);
         tt.simplify();
+        if (!tt.check()) {
+            return null;
+        }
         return tt;
     }
 
