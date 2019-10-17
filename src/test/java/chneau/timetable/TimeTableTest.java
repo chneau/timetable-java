@@ -3,7 +3,8 @@
  */
 package chneau.timetable;
 
-import static org.junit.Assert.fail;
+import static org.junit.Assert.assertNotNull;
+import static org.junit.Assert.assertNull;
 
 import chneau.openhours.OpenHours;
 import java.time.Duration;
@@ -13,22 +14,36 @@ import org.junit.Test;
 public class TimeTableTest {
 
     @Test
+    public void testOverflow() {
+        var tt = new TimeTable(1, OpenHours.parse("mo-fr 11:00-16:00"));
+        tt = tt.add(LocalDateTime.of(2019, 3, 12, 11, 0), Duration.ofHours(5), 1);
+        assertNotNull("tt should be instanciated", tt);
+        tt = tt.add(LocalDateTime.of(2019, 3, 12, 12, 0), Duration.ofMillis(1), 0.0001);
+        assertNull("tt should be null", tt);
+    }
+
+    @Test
+    public void testRangeOverlapAtSameTime() {
+        var tt = new TimeTable(2, OpenHours.parse("mo-fr 11:00-16:00"));
+        tt = tt.add(LocalDateTime.of(2019, 3, 12, 11, 0), Duration.ofHours(1), 1);
+        assertNotNull("tt should be instanciated", tt);
+        tt = tt.add(LocalDateTime.of(2019, 3, 12, 13, 0), Duration.ofHours(1), 2);
+        assertNotNull("tt should be instanciated", tt);
+        tt = tt.add(LocalDateTime.of(2019, 3, 13, 11, 0), Duration.ofHours(1), 1);
+        assertNotNull("tt should be instanciated", tt);
+    }
+
+    @Test
     public void testOverlappingAndSimplifying() {
         var tt = new TimeTable(5, OpenHours.parse("mo-fr 11:00-16:00"));
         for (int i = 0; i < 5; i++) {
             tt = tt.add(LocalDateTime.of(2019, 3, 12, 11, 0), Duration.ofHours(2), 1);
-            if (tt == null) {
-                fail("should not fail here");
-            }
+            assertNotNull("tt should be instanciated", tt);
             tt = tt.add(LocalDateTime.of(2019, 3, 12, 13, 0), Duration.ofHours(2), 1);
-            if (tt == null) {
-                fail("should not fail here");
-            }
+            assertNotNull("tt should be instanciated", tt);
         }
         tt = tt.add(LocalDateTime.of(2019, 3, 12, 11, 0), Duration.ofHours(2), 1);
-        if (tt != null) {
-            fail("should not fail here");
-        }
+        assertNull("tt should be null", tt);
     }
 
     @Test
@@ -41,9 +56,7 @@ public class TimeTableTest {
                 d = when;
             }
             var newtt = tt.add(when, Duration.ofHours(1), 1);
-            if (newtt == null) {
-                fail("should not fail here");
-            }
+            assertNotNull("tt should be instanciated", tt);
             tt = newtt;
         }
     }

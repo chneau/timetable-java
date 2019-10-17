@@ -30,7 +30,7 @@ public final class TimeTable {
     }
 
     private boolean check() {
-        var res = 0;
+        var res = .0;
         for (int i = 0; i < rel.size(); i++) {
             res += rel.get(i).value;
             if (res > max) {
