@@ -85,7 +85,7 @@ public final class TimeTable {
                 ldt = t;
             }
         }
-        if (add(ldt, d, cap).check()) {
+        if (add(ldt, d, cap) != null) {
             return ldt;
         }
         for (int i = 0; i < rel.size(); i++) {
