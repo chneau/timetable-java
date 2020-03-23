@@ -1,6 +1,6 @@
 plugins {
     id 'java-library'
-    id "com.diffplug.gradle.spotless" version "3.25.0"
+    id 'com.diffplug.gradle.spotless' version '3.25.0'
     id 'pmd'
     id 'com.github.spotbugs' version '2.0.0'
 }
@@ -12,7 +12,7 @@ repositories {
 }
 
 dependencies {
-    implementation "chneau:openhours:v1.2.1"
+    implementation 'chneau:openhours:v1.3.0'
     testImplementation 'junit:junit:4.12'
 }
 
