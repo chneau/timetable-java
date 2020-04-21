@@ -12,7 +12,7 @@ repositories {
 }
 
 dependencies {
-    implementation 'chneau:openhours:v1.4.0'
+    implementation 'chneau:openhours:v1.4.1'
     testImplementation 'junit:junit:4.12'
 }
 
