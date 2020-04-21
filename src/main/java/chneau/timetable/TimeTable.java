@@ -1,11 +1,14 @@
 package chneau.timetable;
 
-import chneau.openhours.Whenable;
 import java.time.Duration;
 import java.time.LocalDateTime;
 import java.util.ArrayList;
 import java.util.Collections;
+import java.util.HashMap;
 import java.util.List;
+import java.util.stream.Collectors;
+
+import chneau.openhours.Whenable;
 
 public final class TimeTable {
     private List<Point> rel;
@@ -37,36 +40,40 @@ public final class TimeTable {
                 return false;
             }
         }
+        if (res != 0) {
+            return false;
+        }
         return true;
     }
 
     private void simplify() {
-        var newx = new ArrayList<Point>();
-        for (int i = 0; i < rel.size(); i++) {
-            if (i == 0) {
-                newx.add(rel.get(i));
-                continue;
-            }
-            var relTime = rel.get(i).time;
-            var newxTime = newx.get(newx.size() - 1).time;
-            if (relTime.equals(newxTime)) {
-                newx.get(newx.size() - 1).value += rel.get(i).value;
-                if (newx.get(newx.size() - 1).value == 0) {
-                    newx.remove(newx.size() - 1);
+        var map = new HashMap<LocalDateTime, Point>();
+        for (var point : rel) {
+            if (map.containsKey(point.time)) {
+                var p = map.get(point.time);
+                p.value += point.value;
+                if (p.value == 0) {
+                    map.remove(point.time);
+                } else {
+                    map.put(point.time, p);
                 }
             } else {
-                newx.add(rel.get(i));
+                map.put(point.time, point);
             }
         }
-        this.rel = newx;
+        rel = map.values().stream().sorted().collect(Collectors.toList());
     }
 
     public TimeTable add(LocalDateTime from, Duration dur, double cap) {
-        var x = new ArrayList<>(rel);
+        var x = new ArrayList<Point>();
+        for (var p : rel) {
+            var copy = new Point(p.time, p.value);
+            x.add(copy);
+        }
         x.add(new Point(from, cap));
         x.add(new Point(from.plus(dur), -cap));
         Collections.sort(x);
-        var tt = new TimeTable(max, this.contraint, x);
+        var tt = new TimeTable(max, contraint, x);
         tt.simplify();
         if (!tt.check()) {
             return null;
@@ -75,7 +82,7 @@ public final class TimeTable {
     }
 
     public String toString() {
-        return this.rel.toString();
+        return rel.toString();
     }
 
     public LocalDateTime when(LocalDateTime ldt, Duration d, double cap) {
