@@ -105,7 +105,11 @@ public final class TimeTable {
             if (t != null) {
                 ldt = t;
             }
-            if (add(ldt, d, cap).check()) {
+            var test = add(ldt, d, cap);
+            if (test == null) {
+                continue;
+            }
+            if (test.check()) {
                 return ldt;
             }
         }
