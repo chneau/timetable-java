@@ -1,5 +1,6 @@
 package chneau.timetable;
 
+import chneau.openhours.Whenable;
 import java.time.Duration;
 import java.time.LocalDateTime;
 import java.util.ArrayList;
@@ -7,8 +8,6 @@ import java.util.Collections;
 import java.util.HashMap;
 import java.util.List;
 import java.util.stream.Collectors;
-
-import chneau.openhours.Whenable;
 
 public final class TimeTable {
     private List<Point> rel;
