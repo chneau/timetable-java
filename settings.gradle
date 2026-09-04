@@ -1,7 +1,2 @@
 rootProject.name = 'timetable'
 
-sourceControl {
-    gitRepository("https://github.com/chneau/openhours-java.git") {
-        producesModule("chneau:openhours")
-    }
-}

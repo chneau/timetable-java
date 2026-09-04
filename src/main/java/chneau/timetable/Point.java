@@ -1,26 +1,31 @@
 package chneau.timetable;
 
 import java.time.LocalDateTime;
+import java.time.ZoneOffset;
 
-final class Point implements Comparable<Point> {
-    final LocalDateTime time;
-    double value;
+public record Point(LocalDateTime time, double value) implements Comparable<Point> {
+    public Point {
+        if (time == null) {
+            throw new NullPointerException("time must not be null");
+        }
+    }
 
-    Point(LocalDateTime time, double value) {
-        this.time = time;
-        this.value = value;
+    public long epochSecond() {
+        return time.toEpochSecond(ZoneOffset.UTC);
     }
 
     @Override
     public int compareTo(Point o) {
-        var ret = time.compareTo(o.time);
+        int ret = time.compareTo(o.time);
         if (ret == 0) {
-            ret = Double.compare(ret, o.value);
+            ret = Double.compare(value, o.value);
         }
         return ret;
     }
 
+    @Override
     public String toString() {
-        return "{" + time.toString() + "," + Double.toString(value) + "}";
+        return "{" + time + "," + value + "}";
     }
 }
+

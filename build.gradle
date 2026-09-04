@@ -1,14 +1,84 @@
 plugins {
     id 'java-library'
+    id 'maven-publish'
 }
 
-group 'chneau'
+group = 'chneau'
+version = '1.0.0'
+
+java {
+    toolchain {
+        languageVersion = JavaLanguageVersion.of(26)
+    }
+    withSourcesJar()
+    withJavadocJar()
+}
 
 repositories {
-    jcenter()
+    mavenLocal()
+    mavenCentral()
+    maven { url 'https://jitpack.io' }
 }
 
 dependencies {
-    implementation 'chneau:openhours:v1.+'
-    testImplementation 'junit:junit:4.12'
+    implementation 'chneau:openhours:1.0.0'
+    implementation 'com.fasterxml.jackson.core:jackson-databind:2.18.2'
+    testImplementation 'org.junit.jupiter:junit-jupiter:5.11.4'
+    testRuntimeOnly 'org.junit.platform:junit-platform-launcher'
 }
+
+test {
+    useJUnitPlatform()
+    testLogging {
+        events "passed", "skipped", "failed"
+    }
+}
+
+javadoc {
+    if (options instanceof StandardJavadocDocletOptions) {
+        options.addStringOption('Xdoclint:none', '-quiet')
+    }
+}
+
+publishing {
+    publications {
+        mavenJava(MavenPublication) {
+            from components.java
+            pom {
+                name = 'timetable'
+                description = 'Modern capacity and schedule constraint evaluation engine in Java 26'
+                url = 'https://github.com/chneau/timetable-java'
+                licenses {
+                    license {
+                        name = 'MIT License'
+                        url = 'https://opensource.org/licenses/MIT'
+                    }
+                }
+                developers {
+                    developer {
+                        id = 'chneau'
+                        name = 'chneau'
+                    }
+                }
+            }
+        }
+    }
+    repositories {
+        maven {
+            name = "GitHubPackages"
+            url = uri("https://maven.pkg.github.com/chneau/timetable-java")
+            credentials {
+                username = System.getenv("GITHUB_ACTOR") ?: ""
+                password = System.getenv("GITHUB_TOKEN") ?: ""
+            }
+        }
+    }
+}
+
+tasks.register('bench', JavaExec) {
+    group = 'verification'
+    description = 'Runs the TimeTable benchmark suite'
+    classpath = sourceSets.test.runtimeClasspath
+    mainClass = 'chneau.timetable.TimeTableBenchmarks'
+}
+
